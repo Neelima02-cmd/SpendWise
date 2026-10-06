@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Expense Tracker</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            font-family: Arial, sans-serif;
+        }
+
+        .register-box {
+            background-color: white;
+            width: 350px;
+            margin: 100px auto;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px gray;
+        }
+
+        h1 {
+            color: purple;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid gray;
+            border-radius: 7px;
+        }
+
+        button {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkviolet;
+        }
+
+        a {
+            color: purple;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-box">
+
+        <h1>💰 Expense Tracker</h1>
+
+        <h2>Create Account</h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Choose a username"
+                required
+            >
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Choose a password"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">
+                Register
+            </button>
+
+        </form>
+
+        <p>
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+
+    </div>
+
+</body>
+</html>

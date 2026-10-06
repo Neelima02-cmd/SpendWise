@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+
+    <style>
+        body {
+            background-color: lightblue;
+            color: darkblue;
+            font-family: Arial, sans-serif;
+        }
+
+        .title {
+            background-color: purple;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .intro {
+            text-align: center;
+            color: darkgreen;
+        }
+
+        .card {
+            background-color: white;
+            width: 300px;
+            margin: 25px auto;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px gray;
+        }
+
+        .card h2 {
+            color: purple;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: darkgreen;
+        }
+
+        .expense-form {
+            background-color: white;
+            width: 300px;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px gray;
+            text-align: center;
+        }
+
+        .expense-form h2 {
+            color: purple;
+        }
+
+        .expense-form input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid gray;
+            border-radius: 6px;
+        }
+
+        .expense-btn {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .expense-btn:hover {
+            background-color: darkviolet;
+        }
+
+        .budget-alert {
+            width: 300px;
+            margin: 25px auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: white;
+            box-shadow: 0 4px 10px gray;
+        }
+
+        .safe {
+            color: green;
+        }
+
+        .warning {
+            color: orange;
+        }
+
+        .danger {
+            color: red;
+        }
+
+        .history {
+            background-color: white;
+            width: 500px;
+            max-width: 85%;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px gray;
+        }
+
+        .history h2 {
+            color: purple;
+            text-align: center;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            margin: 8px 0;
+            background-color: lavender;
+            border-radius: 8px;
+        }
+
+        .expense-name {
+            font-weight: bold;
+        }
+
+        .expense-amount {
+            color: darkgreen;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1 class="title">My Expense Tracker</h1>
+
+    <p class="intro">
+        Track your expenses and manage your budget easily.
+    </p>
+
+
+    <!-- Total Expenses -->
+
+    <div class="card">
+
+        <h2>Total Expenses</h2>
+
+        <p id="totalExpenses">₹0</p>
+
+    </div>
+
+
+    <!-- Monthly Budget -->
+
+    <div class="card">
+
+        <h2>Monthly Budget</h2>
+
+        <p>₹10,000</p>
+
+    </div>
+
+
+    <!-- Budget Alert -->
+
+    <div class="budget-alert safe" id="budgetAlert">
+
+        🟢 You are within your budget.
+
+    </div>
+
+
+    <!-- Add Expense Form -->
+
+    <div class="expense-form">
+
+        <h2>Add Expense</h2>
+
+        <input
+            type="text"
+            id="expenseName"
+            placeholder="Expense Name"
+        >
+
+        <input
+            type="number"
+            id="expenseAmount"
+            placeholder="Amount"
+        >
+
+        <button
+            type="button"
+            class="expense-btn"
+            onclick="addExpense()"
+        >
+            Add Expense
+        </button>
+
+    </div>
+
+
+    <!-- Expense History -->
+
+    <div class="history">
+
+        <h2>Expense History</h2>
+
+        <div id="expenseList">
+
+            <p style="text-align: center;">
+                No expenses added yet.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let total = 0;
+
+        const budget = 10000;
+
+
+        function addExpense() {
+
+            let name =
+                document.getElementById("expenseName").value;
+
+            let amount =
+                Number(document.getElementById("expenseAmount").value);
+
+
+            if (name === "" || amount <= 0) {
+
+                alert("Please enter expense name and amount.");
+
+                return;
+
+            }
+
+
+            // Add amount to total
+
+            total = total + amount;
+
+
+            // Update total expenses
+
+            document.getElementById("totalExpenses").innerText =
+                "₹" + total;
+
+
+            // Add expense to history
+
+            let expenseList =
+                document.getElementById("expenseList");
+
+
+            // Remove "No expenses added yet."
+
+            if (expenseList.innerHTML.includes("No expenses added yet.")) {
+
+                expenseList.innerHTML = "";
+
+            }
+
+
+            let expenseItem =
+                document.createElement("div");
+
+            expenseItem.className = "expense-item";
+
+
+            expenseItem.innerHTML =
+                '<span class="expense-name">' +
+                name +
+                '</span>' +
+                '<span class="expense-amount">₹' +
+                amount +
+                '</span>';
+
+
+            expenseList.appendChild(expenseItem);
+
+
+            // Clear input fields
+
+            document.getElementById("expenseName").value = "";
+
+            document.getElementById("expenseAmount").value = "";
+
+
+            // Check budget
+
+            checkBudget();
+
+
+            alert("Expense added successfully!");
+
+        }
+
+
+        function checkBudget() {
+
+            let percentage =
+                (total / budget) * 100;
+
+            let alertBox =
+                document.getElementById("budgetAlert");
+
+
+            if (percentage >= 100) {
+
+                alertBox.innerHTML =
+                    "🔴 Budget exceeded! You have spent ₹" +
+                    total;
+
+                alertBox.className =
+                    "budget-alert danger";
+
+            }
+
+            else if (percentage >= 80) {
+
+                alertBox.innerHTML =
+                    "🟡 Warning! You have used " +
+                    percentage.toFixed(0) +
+                    "% of your budget.";
+
+                alertBox.className =
+                    "budget-alert warning";
+
+            }
+
+            else {
+
+                alertBox.innerHTML =
+                    "🟢 You are within your budget. " +
+                    percentage.toFixed(0) +
+                    "% used.";
+
+                alertBox.className =
+                    "budget-alert safe";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
